@@ -32,6 +32,11 @@ class HomeController extends Controller
         return redirect()->route('workspace');
     }
 
+    public function notpage()
+    {
+        return redirect()->route('home');
+    }
+
     public function showWorkspace()
     {
         return view('workspaces', ['ws' => Auth::user()->workspaces()->latest()->get()]);
@@ -75,10 +80,12 @@ class HomeController extends Controller
     public function createApi(Workspace $ws)
     {
         $this->authorize('view', $ws);
-        return view('apis.create', ['ws'=>$ws]);
+        return view('apis.create', ['ws' => $ws]);
     }
 
-    public function storeApi(Request $r, Workspace $ws) {
+    public function storeApi(Request $r, Workspace $ws)
+    {
+        $this->authorize('view', $ws);
         $messages = [
             'name.required' => 'Введите название для токена!',
             'name.max' => 'Название должно быть не больше 50 символов',
@@ -91,16 +98,19 @@ class HomeController extends Controller
             'name' => $validated['name'],
             'token' => $validated['token'],
         ]);
-        return redirect()->route('detail', ['ws'=>$ws->id]);
+        return redirect()->route('detail', ['ws' => $ws->id]);
     }
 
-    public function removeApi(Workspace $ws, ApiToken $ap) {
+    public function removeApi(Workspace $ws, ApiToken $ap)
+    {
+        $this->authorize('view', $ws);
         $ap->revoked_at = Carbon::now();
         $ap->save();
-        return redirect()->route('detail', ['ws'=>$ws->id]);
+        return redirect()->route('detail', ['ws' => $ws->id]);
     }
 
-    public function showBills() {
+    public function showBills()
+    {
         return view('bills');
     }
 }

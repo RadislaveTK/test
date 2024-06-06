@@ -13,7 +13,7 @@
     <div class="container">
         <header class="d-flex justify-content-center py-3">
             <ul class="nav nav-pills">
-                @auth()
+                @auth
                 <li class="nav-item ms-3"><a href="{{ route('workspace') }}" class="btn btn-primary" aria-current="page">Пространства</a></li>
                 <li class="nav-item ms-3"><a href="{{ route('bills') }}" class="btn btn-primary" aria-current="page">Счета</a></li>
                 <form action="{{ route('logout') }}" class="form form-inline ms-3" method="post">

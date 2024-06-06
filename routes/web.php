@@ -21,4 +21,8 @@ Route::get('/workspace/{ws}/createApi', [HomeController::class, 'createApi'])->n
 Route::post('/workspace/{ws}/store', [HomeController::class, 'storeApi'])->name('ws.storeApi');
 
 // Route::get('/workspace/{ws}/api/{ap}', [HomeController::class, ''])->name();
+
 Route::get('/workspace/{ws}/api/{ap}/remove', [HomeController::class, 'removeApi'])->name('ws.removeApi');
+
+Route::fallback([HomeController::class, 'notpage']);
+
