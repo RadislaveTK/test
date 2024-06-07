@@ -34,11 +34,14 @@
             @endforeach
         @endforeach
     </tbody>
+    @if ($total != 0)
     <tfoot>
         <tr>
             <td colspan="3"><h4>Всего</h4></td>
             <td colspan="1"><h4>{{ $total }} $</h4></td>
+            <td colspan="1"><a class="btn btn-success" href="{{ route('bills.pay') }}">Оплатить</a></td>
         </tr>
     </tfoot>
+    @endif
 </table>
 @endsection
