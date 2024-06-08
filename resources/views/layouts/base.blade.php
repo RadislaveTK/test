@@ -25,6 +25,9 @@
                 <li class="nav-item ms-3"><a href="{{ route('login') }}" class="btn btn-success" aria-current="page">Войти</a></li>
                 <li class="nav-item ms-3"><a href="{{ route('register') }}" class="btn btn-primary" aria-current="page">Зарегестрироваться</a></li>
                 @endguest
+                @if (Auth::user()->role == 'admin')
+                <li class="nav-item ms-3"><a href="{{ route('admin.panel') }}" class="btn btn-primary" aria-current="page">Админ Панель</a></li>
+                @endif
             </ul>
         </header>
     </div>

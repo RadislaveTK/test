@@ -19,15 +19,14 @@ class VerToken
     {
         $token = ApiToken::where('token', $request->ap)->first();
         
-        if($token->revoked_at != null) {
-            return redirect()->route('home');
+        if($token->revoked_at != null || $token->blocking == true) {
+            return redirect()->route('detail', ['ws' => $request->ws]);
         } else if($token->time >= $token->limit) {
-            $token->revoked_at = Carbon::now();
+            $token->time = $token->limit;
+            $token->blocking = true;
             $token->save();
             return $next($request);
         } else {
-            $token->time += 0.1;
-            $token->save();
             return $next($request);
         }
     }

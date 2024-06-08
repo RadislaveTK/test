@@ -97,6 +97,7 @@ class HomeController extends Controller
         $ws->apiTokens()->create([
             'name' => $validated['name'],
             'token' => $validated['token'],
+            'user_id' => Auth::user()->id,
         ]);
         return redirect()->route('detail', ['ws' => $ws->id]);
     }

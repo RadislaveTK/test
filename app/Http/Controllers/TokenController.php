@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ApiToken;
 use App\Models\User;
 use App\Models\Workspace;
+use Illuminate\Support\Facades\Gate;
 
 class TokenController extends Controller
 {
@@ -15,11 +17,25 @@ class TokenController extends Controller
         $this->middleware('token');
     }
 
-    public function viewToken(Workspace $ws, $api) {
-        return response()->json([
-            'message' => 'API endpoint accessed',
-            'token' => ApiToken::where('token', $api)->first(),
+    public function viewToken(Request $r, Workspace $ws, $api)
+    {
+        $token = ApiToken::where('token', $api)->first();
+        Gate::authorize('view', $token);
+
+        $startTime = Carbon::now();
+
+        $res = response()->json([
+            'message' => 'API работает отлично!',
+            'token' => $token,
         ]);
+
+        $endTime = Carbon::now();
+
+        $totalTime = $startTime->diffInSeconds($endTime);
+        $token->time += $totalTime;
+        $token->save();
+
+        return $res;
     }
 
 }

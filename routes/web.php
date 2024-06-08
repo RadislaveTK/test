@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TokenController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
@@ -15,7 +16,7 @@ Route::get('/bills/pay', function () {
     foreach (Auth::user()->workspaces()->latest()->get() as $ws) {
         foreach ($ws->apiTokens()->get() as $api) {
             $api->time = 0;
-            $api->revoked_at = null;
+            $api->blocking = false;
             $api->save();
         }
     }
@@ -35,6 +36,10 @@ Route::post('/workspace/{ws}/store', [HomeController::class, 'storeApi'])->name(
 Route::get('/workspace/{ws}/api/{ap}', [TokenController::class, 'viewToken'])->name('api.view');
 
 Route::get('/workspace/{ws}/api/{ap}/remove', [HomeController::class, 'removeApi'])->name('ws.removeApi');
+
+Route::middleware('admin')->group(function () {
+    Route::get('/adminpanel', [AdminController::class, 'viewPanel'])->name('admin.panel');
+});
 
 Route::fallback([HomeController::class, 'notpage']);
 

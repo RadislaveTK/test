@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Workspace;
+use App\Models\ApiToken;
 
 class User extends Authenticatable
 {
@@ -49,5 +50,10 @@ class User extends Authenticatable
     public function workspaces()
     {
         return $this->hasMany(Workspace::class);
+    }
+
+    public function api_token()
+    {
+        return $this->hasMany(ApiToken::class);
     }
 }
