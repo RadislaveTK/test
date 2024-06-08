@@ -97,6 +97,8 @@ class HomeController extends Controller
         $ws->apiTokens()->create([
             'name' => $validated['name'],
             'token' => $validated['token'],
+            'price' => config('app.TOKEN_PRICE'),
+            'limit' => config('app.TOKEN_LIMIT'),
             'user_id' => Auth::user()->id,
         ]);
         return redirect()->route('detail', ['ws' => $ws->id]);

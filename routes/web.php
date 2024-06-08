@@ -39,6 +39,14 @@ Route::get('/workspace/{ws}/api/{ap}/remove', [HomeController::class, 'removeApi
 
 Route::middleware('admin')->group(function () {
     Route::get('/adminpanel', [AdminController::class, 'viewPanel'])->name('admin.panel');
+
+    Route::post('/adminpanel/editConfigurate', [AdminController::class, 'editConfig'])->name('admin.editConfigurate');
+
+    Route::get('/adminpanel/editUser/{user}', [AdminController::class, 'editUser'])->name('admin.editUser');
+    Route::post('/adminpanel/storeUser', [AdminController::class, 'storeUser'])->name('admin.storeUser');
+
+    Route::get('/adminpanel/editWs/{ws}', [AdminController::class, 'editWs'])->name('admin.editWs');
+    Route::post('/adminpanel/storeWs', [AdminController::class, 'storeWs'])->name('admin.storeWs');
 });
 
 Route::fallback([HomeController::class, 'notpage']);

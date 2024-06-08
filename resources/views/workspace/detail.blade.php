@@ -16,7 +16,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($ws->apiTokens()->get() as $api)
+        @foreach ($ws->apiTokens()->latest()->get() as $api)
             <tr>
                 <td>{{ $api->name }}</td>
                 <td>{{ $api->revoked_at }}</td>

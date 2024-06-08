@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'TOKEN_LIMIT' => 5.5,
+    'TOKEN_PRICE' => 0.0015,
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
