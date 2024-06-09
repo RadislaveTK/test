@@ -16,7 +16,7 @@
             <th>ID</th>
             <th>Имя</th>
             <th>Email</th>
-            <th>Role</th>
+            <th>Роль</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
