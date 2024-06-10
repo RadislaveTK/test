@@ -46,9 +46,6 @@ class admincontroller extends Controller
     public function storeUser(Request $r)
     {
         $messages = [
-            'id.required' => 'Поле ID должно быть заполнено!',
-            'id.max' => 'Кол-во символов должно быть не больше 50',
-            'id.numeric' => 'Поле ID должно содержать только цифры',
             'name.required' => 'Поле имя должно быть заполнено!',
             'name.max' => 'Кол-во символов должно быть не больше 50',
             'email.required' => 'Поле email должно быть заполнено!',
@@ -57,13 +54,12 @@ class admincontroller extends Controller
             'role.max' => 'Кол-во символов должно быть не больше 50',
         ];
         $validated = $r->validate([
-            'id' => 'required|max:50|numeric',
+            'id' => '',
             'name' => 'required|max:50',
             'email' => 'required|max:50',
             'role' => 'required|max:50',
         ], $messages);
-        $user = User::find($validated['id']);
-        // dd($validated['id']);
+        $user = User::find($r->id);
         $user->id = $validated['id'];
         $user->name = $validated['name'];
         $user->email = $validated['email'];
@@ -87,7 +83,7 @@ class admincontroller extends Controller
             'title.max' => 'Кол-во символов должно быть не больше 50',
         ];
         $validated = $r->validate([
-            'id' => 'required|max:50|numeric',
+            'id' => '',
             'title' => 'required|max:50',
             'desc' => '',
         ], $messages);

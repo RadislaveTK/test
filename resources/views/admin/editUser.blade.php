@@ -18,7 +18,7 @@
     <div class="mb-3 form-group">
         <label for="id" class="form-label">ID</label>
         <input type="text" name="id" class="form-control @error('id') is-invalid @enderror" id="id"
-            value="{{ old('id', $user->id) }}" disabled>
+            value="{{ old('id', $user->id) }}" readonly>
     </div>
     <div class="mb-3 form-group">
         <label for="name" class="form-label">Имя</label>

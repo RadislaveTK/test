@@ -31,7 +31,9 @@ class TokenController extends Controller
 
         $endTime = Carbon::now();
 
-        $totalTime = $startTime->diffInSeconds($endTime);
+        $totalTime = floatval($startTime->diffInSeconds($endTime));
+        // $totalTime = (int) $totalTime;
+        
         $token->time += $totalTime;
         $token->save();
 

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->string('token', 40);
-            $table->time('time', 3)->default(0);
-            $table->decimal('price', 10, 4)->default(0.0015);
-            $table->decimal('total', 10, 2)->storedAs('`price` * `time`');
-            $table->decimal('limit', 10, 2)->default(7.5);
+            $table->float('time')->default(0);
+            $table->float('price')->default(0.0015);
+            $table->float('total')->storedAs('`price` * `time`');
+            $table->float('limit')->default(7.5);
             $table->foreignId('workspace_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->timestamp('revoked_at')->nullable();
