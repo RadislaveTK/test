@@ -18,6 +18,10 @@ class VerToken
     public function handle(Request $request, Closure $next): Response
     {
         $token = ApiToken::where('token', $request->ap)->first();
+
+        if (!$token) {
+            return response()->json(['error' => 'Token not found'], 404);
+        }
         
         if($token->revoked_at != null || $token->blocking == true) {
             return redirect()->route('detail', ['ws' => $request->ws]);

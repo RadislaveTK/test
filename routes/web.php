@@ -6,6 +6,7 @@ use App\Http\Controllers\TokenController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 
+Route::get('/loginapi/email={email}&password={pass}', [App\Http\Controllers\LoginTokenController::class, 'login'])->name('api.login');
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -33,8 +34,6 @@ Route::get('/workspace/{ws}/delete', [HomeController::class, 'deleteWorkspace'])
 Route::get('/workspace/{ws}/createApi', [HomeController::class, 'createApi'])->name('ws.createApi');
 Route::post('/workspace/{ws}/store', [HomeController::class, 'storeApi'])->name('ws.storeApi');
 
-Route::get('/workspace/{ws}/api/{ap}', [TokenController::class, 'viewToken'])->name('api.view');
-
 Route::get('/workspace/{ws}/api/{ap}/remove', [HomeController::class, 'removeApi'])->name('ws.removeApi');
 
 Route::middleware('admin')->group(function () {
@@ -49,5 +48,9 @@ Route::middleware('admin')->group(function () {
     Route::post('/adminpanel/storeWs', [AdminController::class, 'storeWs'])->name('admin.storeWs');
 });
 
+Route::get('/workspace/{ws}/api/{ap}', [TokenController::class, 'viewToken'])->name('api.view');
+
 Route::fallback([HomeController::class, 'notpage']);
+
+
 

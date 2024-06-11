@@ -57,11 +57,15 @@ class HomeController extends Controller
             'title' => 'required|max:50',
             'desc' => '',
         ], $messages);
-        Auth::user()->workspaces()->create([
-            'title' => $validated['title'],
-            'desc' => $validated['desc'] ?? ' ',
-        ]);
-        return redirect()->route('workspace');
+        if (Workspace::where('title', '=', $validated['title'])->where('user_id', '=', Auth::user()->id)->get()->count() > 0) {
+            return redirect($r->server('HTTP_REFERER'))->withErrors(['name' => 'Пространство с таким названием уже существует!']);
+        } else {
+            Auth::user()->workspaces()->create([
+                'title' => $validated['title'],
+                'desc' => $validated['desc'] ?? ' ',
+            ]);
+            return redirect()->route('workspace');
+        }
     }
 
     public function detailWorkspace(Workspace $ws)
@@ -94,14 +98,18 @@ class HomeController extends Controller
             'name' => 'required|max:50',
             'token' => '',
         ], $messages);
-        $ws->apiTokens()->create([
-            'name' => $validated['name'],
-            'token' => $validated['token'],
-            'price' => config('app.TOKEN_PRICE'),
-            'limit' => config('app.TOKEN_LIMIT'),
-            'user_id' => Auth::user()->id,
-        ]);
-        return redirect()->route('detail', ['ws' => $ws->id]);
+        if ($ws->apiTokens()->where('name', '=', $validated['name'])->where('user_id', '=', Auth::user()->id)->get()->count() > 0) {
+            return redirect($r->server('HTTP_REFERER'))->withErrors(['name' => 'Токен с таким названием уже существует!']);
+        } else {
+            $ws->apiTokens()->create([
+                'name' => $validated['name'],
+                'token' => $validated['token'],
+                'price' => config('app.TOKEN_PRICE'),
+                'limit' => config('app.TOKEN_LIMIT'),
+                'user_id' => Auth::user()->id,
+            ]);
+            return redirect()->route('detail', ['ws' => $ws->id]);
+        }
     }
 
     public function removeApi(Workspace $ws, ApiToken $ap)

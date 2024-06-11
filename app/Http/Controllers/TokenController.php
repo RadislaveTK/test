@@ -16,6 +16,7 @@ class TokenController extends Controller
         $this->middleware('auth');
         $this->middleware('token');
     }
+    
 
     public function viewToken(Request $r, Workspace $ws, $api)
     {
