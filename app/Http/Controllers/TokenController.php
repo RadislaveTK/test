@@ -37,6 +37,8 @@ class TokenController extends Controller
         
         $token->time += $totalTime;
         $token->save();
+        $ws->total += ($totalTime * $token->price);
+        $ws->save();
 
         return $res;
     }

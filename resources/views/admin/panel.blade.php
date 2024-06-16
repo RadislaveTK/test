@@ -67,18 +67,4 @@
         </ul>
     </div>
 @endif
-<form action="{{ route('admin.editConfigurate') }}" class="form" method="POST">
-    @csrf
-    <div class="mb-3 form-group">
-        <label for="limit" class="form-label">Лимит использования</label>
-        <input type="text" name="limit" class="form-control @error('limit') is-invalid @enderror" id="limit"
-            value="{{ old('limit', config('app.TOKEN_LIMIT')) }}">
-    </div>
-    <div class="mb-3 form-group">
-        <label for="price" class="form-label">Цена (1 с.)</label>
-        <input type="text" name="price" class="form-control @error('price') is-invalid @enderror" id="price"
-            value="{{ old('price', config('app.TOKEN_PRICE')) }}">
-    </div>
-    <button type="submit" class="btn btn-success">Сохранить</button>
-</form>
 @endsection

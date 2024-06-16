@@ -32,8 +32,12 @@
     </div>
     <div class="mb-3 form-group">
         <select name="role" class="form-select" >
-            <option value="user" selected>Пользователь</option>
-            <option value="admin">Админ</option>
+            <option value="user" @if ($user->role == 'user')
+            selected
+            @endif>Пользователь</option>
+            <option value="admin" @if ($user->role == 'admin')
+            selected
+            @endif>Админ</option>
         </select>
     </div>
     <button type="submit" class="btn btn-success">Сохранить</button>

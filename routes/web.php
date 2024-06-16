@@ -16,9 +16,11 @@ Route::get('/bills', [HomeController::class, 'showBills'])->name('bills');
 Route::get('/bills/pay', function () {
     foreach (Auth::user()->workspaces()->latest()->get() as $ws) {
         foreach ($ws->apiTokens()->get() as $api) {
+            $ws->total = 0; 
             $api->time = 0;
             $api->blocking = false;
             $api->save();
+            $ws->save();
         }
     }
     return redirect()->route('bills');
@@ -28,6 +30,8 @@ Route::get('/workspace/create', [HomeController::class, 'createWorkspace'])->nam
 Route::post('/workspace/store', [HomeController::class, 'storeWorkspace'])->name('ws.store');
 
 Route::get('/workspace/{ws}', [HomeController::class, 'detailWorkspace'])->name('detail');
+Route::get('/workspace/{ws}/settings', [HomeController::class, 'settingsWorkspace'])->name('settings');
+Route::post('/workspace/{ws}/settings', [HomeController::class, 'settingsSWorkspace'])->name('settingsS');
 
 Route::get('/workspace/{ws}/delete', [HomeController::class, 'deleteWorkspace'])->name('ws.delete');
 
@@ -38,8 +42,6 @@ Route::get('/workspace/{ws}/api/{ap}/remove', [HomeController::class, 'removeApi
 
 Route::middleware('admin')->group(function () {
     Route::get('/adminpanel', [AdminController::class, 'viewPanel'])->name('admin.panel');
-
-    Route::post('/adminpanel/editConfigurate', [AdminController::class, 'editConfig'])->name('admin.editConfigurate');
 
     Route::get('/adminpanel/editUser/{user}', [AdminController::class, 'editUser'])->name('admin.editUser');
     Route::post('/adminpanel/storeUser', [AdminController::class, 'storeUser'])->name('admin.storeUser');

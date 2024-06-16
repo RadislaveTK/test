@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('title', 50);
             $table->text('desc')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->float('total');
+            $table->float('limit')->default(7.5);
             $table->timestamps();
             $table->index('created_at');
         });

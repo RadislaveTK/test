@@ -19,25 +19,6 @@ class admincontroller extends Controller
         return view("admin.panel");
     }
 
-    public function editConfig(Request $r)
-    {
-        $messages = [
-            'limit.required' => 'Поле лимит должно быть заполнено!',
-            'limit.max' => 'Кол-во символов должно быть не больше 50',
-            'limit.numeric' => 'Поле лимит должно содержать только цифры',
-            'price.required' => 'Поле цена должно быть заполнено!',
-            'price.max' => 'Кол-во символов должно быть не больше 50',
-            'price.numeric' => 'Поле цена должно содержать только цифры',
-        ];
-        $validated = $r->validate([
-            'limit' => 'required|max:50|numeric',
-            'price' => 'required|max:50|numeric',
-        ], $messages);
-        config('app.TOKEN_PRICE', $validated['price']);
-        config('app.TOKEN_LIMIT', $validated['limit']);
-        return redirect('adminpanel');
-    }
-
     public function editUser(User $user)
     {
         return view('admin.editUser', ['user' => $user]);
@@ -81,16 +62,21 @@ class admincontroller extends Controller
             'id.numeric' => 'Поле ID должно содержать только цифры',
             'title.required' => 'Поле название должно быть заполнено!',
             'title.max' => 'Кол-во символов должно быть не больше 50',
+            'quota.required' => 'Поле ID должно быть заполнено!',
+            'quota.max' => 'Кол-во символов должно быть не больше 50',
+            'quota.numeric' => 'Поле ID должно содержать только цифры',
         ];
         $validated = $r->validate([
             'id' => '',
             'title' => 'required|max:50',
             'desc' => '',
+            'quota' => 'required|max:50|numeric',
         ], $messages);
         $ws = Workspace::find($validated['id']);
         $ws->id = $validated['id'];
         $ws->title = $validated['title'];
         $ws->desc = $validated['desc'] ?? ' ';
+        $ws->limit = $validated['quota'];
         $ws->save();
         return redirect($r->server('HTTP_REFERER'));
     }

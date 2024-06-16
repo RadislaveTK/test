@@ -28,9 +28,9 @@ $total = 0;
         @php $total += $api->total @endphp
         <tr>
             <td>&emsp;{{ $api->name }}</td>
-            <td>{{ round($api->time, 4) }} s</td>
+            <td>{{ number_format(round($api->time, 6), 6) }} s</td>
             <td>{{ $api->price }} $</td>
-            <td>{{ round($api->total, 4) }} $</td>
+            <td>{{ number_format(round($api->total, 6), 6) }} $</td>
         </tr>
         @endif
         @endforeach
@@ -43,7 +43,7 @@ $total = 0;
                 <h4>Всего</h4>
             </td>
             <td colspan="1">
-                <h4>{{ round($total, 4) }} $</h4>
+                <h4>{{ number_format(round($total,6), 6) }} $</h4>
             </td>
             <td colspan="1"><a class="btn btn-success" href="{{ route('bills.pay') }}">Оплатить</a></td>
         </tr>

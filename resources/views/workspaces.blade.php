@@ -10,6 +10,8 @@
         <tr>
             <th>Название</th>
             <th>Описание</th>
+            <th>Использованно</th>
+            <th>Лимит</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -18,6 +20,8 @@
         <tr>
             <td>{{ $w->title }}</td>
             <td>{{ $w->desc }}</td>
+            <td>{{ number_format(round($w->total, 6), 6) }} $</td>
+            <td>{{ $w->limit }} $</td>
             <td><a class="btn btn-info" href="{{ route('detail', ['ws'=>$w]) }}">Перейти</a></td>
         </tr>
         @endforeach

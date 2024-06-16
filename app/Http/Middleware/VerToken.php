@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\ApiToken;
+use App\Models\Workspace;
 use Carbon\Carbon;
 
 class VerToken
@@ -18,6 +19,7 @@ class VerToken
     public function handle(Request $request, Closure $next): Response
     {
         $token = ApiToken::where('token', $request->ap)->first();
+        $ws = Workspace::find($token->workspace_id);
 
         if (!$token) {
             return response()->json(['error' => 'Token not found'], 404);
@@ -25,8 +27,8 @@ class VerToken
         
         if($token->revoked_at != null || $token->blocking == true) {
             return redirect()->route('detail', ['ws' => $request->ws]);
-        } else if($token->time >= $token->limit) {
-            $token->time = $token->limit;
+        } else if($ws->total >= $ws->limit) {
+            $ws->total = $ws->limit;
             $token->blocking = true;
             $token->save();
             return $next($request);

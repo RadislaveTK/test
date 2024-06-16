@@ -18,7 +18,6 @@ return new class extends Migration
             $table->float('time')->default(0);
             $table->float('price')->default(0.0015);
             $table->float('total')->storedAs('`price` * `time`');
-            $table->float('limit')->default(7.5);
             $table->foreignId('workspace_id')->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->timestamp('revoked_at')->nullable();

@@ -30,6 +30,11 @@
         <input type="text" name="desc" class="form-control @error('desc') is-invalid @enderror" id="desc"
             value="{{ old('desc', $ws->desc) }}">
     </div>
+    <div class="mb-3 form-group">
+        <label for="quota" class="form-label">Лимит</label>
+        <input type="text" name="quota" class="form-control @error('quota') is-invalid @enderror" id="quota"
+            value="{{ old('quota', $ws->limit) }}">
+    </div>
     <button type="submit" class="btn btn-success">Сохранить</button>
 </form>
 @endsection

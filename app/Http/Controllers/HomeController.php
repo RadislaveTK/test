@@ -63,6 +63,8 @@ class HomeController extends Controller
             Auth::user()->workspaces()->create([
                 'title' => $validated['title'],
                 'desc' => $validated['desc'] ?? ' ',
+                'total' => 0,
+                'limit' => config('app.TOKEN_LIMIT'),
             ]);
             return redirect()->route('workspace');
         }
@@ -105,7 +107,6 @@ class HomeController extends Controller
                 'name' => $validated['name'],
                 'token' => $validated['token'],
                 'price' => config('app.TOKEN_PRICE'),
-                'limit' => config('app.TOKEN_LIMIT'),
                 'user_id' => Auth::user()->id,
             ]);
             return redirect()->route('detail', ['ws' => $ws->id]);
@@ -123,5 +124,36 @@ class HomeController extends Controller
     public function showBills()
     {
         return view('bills');
+    }
+
+    public function settingsWorkspace(Workspace $ws)
+    {
+        return view('workspace.settings', ['ws' => $ws]);
+    }
+
+    public function settingsSWorkspace(Request $r, Workspace $ws)
+    {
+
+        $this->authorize('view', $ws);
+        $messages = [
+            'title.required' => 'Введите название для пространства!',
+            'title.max' => 'Название должно быть не больше 50 символов',
+            'quota.required' => 'Поле лимит должно быть заполнено!',
+            'quota.max' => 'Кол-во символов должно быть не больше 50',
+            'quota.numeric' => 'Поле лимит должно содержать только цифры',
+        ];
+        $validated = $r->validate([
+            'title' => 'required|max:50',
+            'desc' => '',
+            'quota' => 'required|numeric|max:50',
+        ], $messages);
+
+        $ws->fill([
+            'title' => $validated['title'],
+            'desc' => $validated['desc'] ?? ' ',
+            'quota' => $validated['quota'],
+        ]);
+        $ws->save();
+        return redirect()->route('detail', ['ws' => $ws->id]);
     }
 }
