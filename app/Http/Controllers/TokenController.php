@@ -18,9 +18,10 @@ class TokenController extends Controller
     }
     
 
-    public function viewToken(Request $r, Workspace $ws, $api)
+    public function viewToken(Request $r, $api)
     {
         $token = ApiToken::where('token', $api)->first();
+        $ws = $token->workspace()->first();
         Gate::authorize('view', $token);
 
         $startTime = Carbon::now();

@@ -6,8 +6,11 @@ use App\Http\Controllers\TokenController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/loginapi/email={email}&password={pass}', [App\Http\Controllers\LoginTokenController::class, 'login'])->name('api.login');
+
+
 Auth::routes();
+
+Route::get('/loginapi/x-api-token={token}', [App\Http\Controllers\LoginTokenController::class, 'login'])->name('api.login');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/workspace', [HomeController::class, 'showWorkspace'])->name('workspace');
@@ -50,7 +53,7 @@ Route::middleware('admin')->group(function () {
     Route::post('/adminpanel/storeWs', [AdminController::class, 'storeWs'])->name('admin.storeWs');
 });
 
-Route::get('/workspace/{ws}/api/{ap}', [TokenController::class, 'viewToken'])->name('api.view');
+Route::get('/api/{ap}', [TokenController::class, 'viewToken'])->name('api.view');
 
 Route::fallback([HomeController::class, 'notpage']);
 

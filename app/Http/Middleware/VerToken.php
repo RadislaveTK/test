@@ -26,7 +26,7 @@ class VerToken
         }
         
         if($token->revoked_at != null || $token->blocking == true) {
-            return redirect()->route('detail', ['ws' => $request->ws]);
+            return response()->json(['message' => 'Превышенна квота'], 403);
         } else if($ws->total >= $ws->limit) {
             $ws->total = $ws->limit;
             $token->blocking = true;
