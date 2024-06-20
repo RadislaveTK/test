@@ -22,9 +22,9 @@ class VerToken
         $token = ApiToken::where('token', $request->ap)->first();
 
         if (!$token) {
-            return response()->json(['error' => 'Token not found'], 404);
+            return response()->json(['error' => 'Tокен не найден!'], 404);
         } else if(!Auth::user()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Не авторизован!'], 401);
         }
 
         $ws = Workspace::find($token->workspace_id);

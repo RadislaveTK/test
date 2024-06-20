@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\ApiToken;
 use App\Models\User;
@@ -17,7 +18,7 @@ class TokenController extends Controller
     }
     
 
-    public function viewToken(Request $r, $api)
+    public function viewToken(Request $r, $api): JsonResponse
     {
         $token = ApiToken::where('token', $api)->first();
         $ws = $token->workspace()->first();

@@ -19,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'token' => VerToken::class,
             'admin' => isadmin::class,
         ]);
+        $middleware->validateCsrfTokens(except: [
+            'api/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

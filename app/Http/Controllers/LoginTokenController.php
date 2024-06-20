@@ -15,9 +15,9 @@ class LoginTokenController extends Controller
         $user = ApiToken::where('token', '=', $token)->first();
         if ($user) {
             Auth::login($user->user()->first(), true);
-            return response()->json(['message' => 'Authorized'], 200);
+            return response()->json(['message' => 'Авторизован'], 200);
         } else {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Не авторизован'], 401);
         }
     }
 }

@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ChatterblastController;
+use App\Http\Controllers\DreamWeaverController;
+use App\Http\Controllers\MindReaderController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +13,24 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-Route::get('/api/login/x-api-token={token}', [App\Http\Controllers\LoginTokenController::class, 'login'])->name('api.login');
+Route::match(['get', 'post'], '/api/login/x-api-token={token}', [App\Http\Controllers\LoginTokenController::class, 'login'])->name('api.login');
+Route::match(['get', 'post'], '/api/{ap}', [TokenController::class, 'viewToken'])->name('api.view');
+
+// Эндпоинты для Chatterblast
+Route::get('/api/{api}/chatterblast/conversation', [ChatterblastController::class, 'createConversation']);
+Route::post('/api/{api}/chatterblast/conversation/{conversation_id}/prompt', [ChatterblastController::class, 'sendPrompt']);
+Route::get('/api/{api}/chatterblast/conversation/{conversation_id}', [ChatterblastController::class, 'getResponse']);
+
+// Эндпоинты для DreamWeaver
+Route::post('/api/{api}/dreamweaver/generate', [DreamWeaverController::class, 'generateImage']);
+Route::get('/api/{api}/dreamweaver/status/{job_id}', [DreamWeaverController::class, 'getJobStatus']);
+Route::get('/api/{api}/dreamweaver/result/{job_id}', [DreamWeaverController::class, 'getResult']);
+Route::post('/api/{api}/dreamweaver/upscale', [DreamWeaverController::class, 'upscaleImage']);
+Route::post('/api/{api}/dreamweaver/zoom/in', [DreamWeaverController::class, 'zoomInImage']);
+Route::post('/api/{api}/dreamweaver/zoom/out', [DreamWeaverController::class, 'zoomOutImage']);
+
+// Эндпоинты для MindReader
+Route::post('/api/{api}/mindreader/recognize', [MindReaderController::class, 'recognizeObjects']);
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -53,8 +73,6 @@ Route::middleware('admin')->group(function () {
     Route::get('/adminpanel/editWs/{ws}', [AdminController::class, 'editWs'])->name('admin.editWs');
     Route::post('/adminpanel/storeWs', [AdminController::class, 'storeWs'])->name('admin.storeWs');
 });
-
-Route::get('/api/{ap}', [TokenController::class, 'viewToken'])->name('api.view');
 
 Route::fallback([HomeController::class, 'notpage']);
 
