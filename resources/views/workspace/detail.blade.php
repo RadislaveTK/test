@@ -26,7 +26,7 @@
                 @if ($api->revoked_at === null || $api->blocking == true)
                     <td><a href="{{ route('ws.removeApi', ['ws' => $ws->id, 'ap' => $api->id]) }}"
                             class="btn btn-danger">Отозвать</a></td>
-                            <td><a href="{{ route('api.view', ['ws' => $ws->id, 'ap' => $api->token]) }}"
+                            <td><a href="{{ route('api.view', ['ap' => $api->token]) }}"
                             class="btn btn-success">Перейти</a></td>
                 @endif
             </tr>

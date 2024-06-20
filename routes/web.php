@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-Route::get('/loginapi/x-api-token={token}', [App\Http\Controllers\LoginTokenController::class, 'login'])->name('api.login');
+Route::get('/api/login/x-api-token={token}', [App\Http\Controllers\LoginTokenController::class, 'login'])->name('api.login');
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/workspace', [HomeController::class, 'showWorkspace'])->name('workspace');
