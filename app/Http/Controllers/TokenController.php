@@ -16,7 +16,7 @@ class TokenController extends Controller
     {
         $this->middleware('token');
     }
-    
+
 
     public function viewToken(Request $r, $api): JsonResponse
     {
@@ -35,7 +35,7 @@ class TokenController extends Controller
 
         $totalTime = floatval($startTime->diffInSeconds($endTime));
         // $totalTime = (int) $totalTime;
-        
+
         $token->time += $totalTime;
         $token->save();
         $ws->total += ($totalTime * $token->price);

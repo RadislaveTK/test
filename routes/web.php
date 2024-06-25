@@ -17,7 +17,7 @@ Route::match(['get', 'post'], '/api/login/x-api-token={token}', [App\Http\Contro
 Route::match(['get', 'post'], '/api/{ap}', [TokenController::class, 'viewToken'])->name('api.view');
 
 // Эндпоинты для Chatterblast
-Route::get('/api/{api}/chatterblast/conversation', [ChatterblastController::class, 'createConversation']);
+Route::post('/api/{api}/chatterblast/conversation', [ChatterblastController::class, 'createConversation']);
 Route::post('/api/{api}/chatterblast/conversation/{conversation_id}/prompt', [ChatterblastController::class, 'sendPrompt']);
 Route::get('/api/{api}/chatterblast/conversation/{conversation_id}', [ChatterblastController::class, 'getResponse']);
 
@@ -40,7 +40,7 @@ Route::get('/bills', [HomeController::class, 'showBills'])->name('bills');
 Route::get('/bills/pay', function () {
     foreach (Auth::user()->workspaces()->latest()->get() as $ws) {
         foreach ($ws->apiTokens()->get() as $api) {
-            $ws->total = 0; 
+            $ws->total = 0;
             $api->time = 0;
             $api->blocking = false;
             $api->save();

@@ -17,6 +17,9 @@ class ChatterblastController extends Controller
      */
     public function createConversation(Request $request, $api)
     {
+        if (!$request->input('conversationId')) {
+            return response('Not found conversationId', 400);
+        }
         // Ваша логика для создания беседы в Chatterblast
         $token = ApiToken::where('token', $api)->first();
         $ws = $token->workspace()->first();
@@ -27,7 +30,7 @@ class ChatterblastController extends Controller
         $res = response()->json([
             'conversation_id' => $request->input('conversationId'),
             'created_at' => Carbon::now()
-        ]);
+        ])->setStatusCode(201);
 
         $endTime = Carbon::now();
 
@@ -51,7 +54,10 @@ class ChatterblastController extends Controller
      */
     public function sendPrompt(Request $request, $api, $conversation_id)
     {
-        // Ваша логика для отправки запроса в Chatterblast
+        if (!$request->input('conversationId') || !$request->input('message')) {
+            return response('Not found attribute', 400);
+        }
+
         $token = ApiToken::where('token', $api)->first();
         $ws = $token->workspace()->first();
         Gate::authorize('view', $token);
@@ -59,15 +65,11 @@ class ChatterblastController extends Controller
         $startTime = Carbon::now();
 
         $res = response()->json([
-            'message' => 'API работает отлично!',
-            'token' => $token,
+            'message' => 'OK',
         ]);
 
         $endTime = Carbon::now();
-
         $totalTime = floatval($startTime->diffInSeconds($endTime));
-        // $totalTime = (int) $totalTime;
-
         $token->time += $totalTime;
         $token->save();
         $ws->total += ($totalTime * $token->price);
@@ -84,7 +86,6 @@ class ChatterblastController extends Controller
      */
     public function getResponse(Request $request, $api, $conversation_id)
     {
-        // Ваша логика для получения ответа от Chatterblast
         $token = ApiToken::where('token', $api)->first();
         $ws = $token->workspace()->first();
         Gate::authorize('view', $token);
@@ -92,15 +93,11 @@ class ChatterblastController extends Controller
         $startTime = Carbon::now();
 
         $res = response()->json([
-            'message' => 'API работает отлично!',
-            'token' => $token,
+            'message' => "Test message",
         ]);
 
         $endTime = Carbon::now();
-
         $totalTime = floatval($startTime->diffInSeconds($endTime));
-        // $totalTime = (int) $totalTime;
-
         $token->time += $totalTime;
         $token->save();
         $ws->total += ($totalTime * $token->price);
